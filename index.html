@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" ng-app="arCloudApp">
+
+<head>
+    <title>Polyview AR Cloud Studio</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-route.min.js"></script>
+
+    <!-- Parse -->
+    <script src="node_modules/parse/dist/parse.min.js"></script>
+    <script>
+        Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
+        Parse.initialize(
+            'b0oiXcJs4u7QGx8dA08kuSIHs9qkP8far3o9ZIcE', // This is your Application ID
+            'NeokbBCMAWxomOjJgiXeduKrQLundR1nHLxAysbG' // This is your Javascript key
+        );
+    </script>
+
+    <!-- <script src="js/ui-bootstrap-tpls-3.0.6.min.js"></script> -->
+
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js"></script>
+</head>
+
+<body>
+    <div class="signup" ng-controller="signupCtrl" ng-cloak>
+        <h1>Signup to Polyview's AR Cloud</h1>
+        <div class="alert alert-danger" role="alert" ng-show="invalidLogin">
+            <strong>Invalid Login!</strong> incorrect email or password
+        </div>
+        <form class="my-4">
+            <div class="form-group row">
+                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="email" ng-model="email">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="pwd" class="col-sm-3 col-form-label">Password</label>
+                <div class="col-sm-9">
+                    <input type="password" class="form-control" ng-model="pwd" id="pwd">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="confirm-pwd" class="col-sm-3 col-form-label">Confirm Password</label>
+                <div class="col-sm-9">
+                    <input type="password" class="form-control" ng-model="confirmPwd" id="confirm-pwd">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="customer-name" class="col-sm-3 col-form-label">Company Display Name</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" ng-model="displayName" id="customer-name">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="customer-tech" class="col-sm-3 col-form-label">Company Tech Name</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" ng-model="techName" id="customer-tech">
+                    <small class="text-muted">Tech name will be used as the subdomain for your hosted page
+                        (TECH_NAME.polyview3d.com).<br> <strong>It cannot be changed after the signup.</strong></small>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="website" class="col-sm-3 col-form-label">Company Website</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" ng-model="website" id="website">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <button type="submit" ng-click="signup()" class="btn btn-block btn-primary">Sign in</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
