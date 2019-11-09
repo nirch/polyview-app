@@ -3,7 +3,11 @@ var app = angular.module("arCloudApp", []);
 
 app.controller("signupCtrl", function ($scope, $timeout, $window) {
 
+    $scope.isSaving = false;
+
     $scope.signup = function () {
+
+        $scope.isSaving = true;
 
         // validations
         // 1) email format
@@ -49,14 +53,17 @@ app.controller("signupCtrl", function ($scope, $timeout, $window) {
                         redirectTo = `https://${$scope.techName}.polyview3d.com/studio`
                     }
                     // redirecting...
+                    $scope.isSaving = false;
                     loc.href = redirectTo;
                 }, 3000);
 
             }, error => {
                 console.error('Error while creating Customer: ', error);
+                $scope.isSaving = false;
             });
         }).catch(error => {
             console.error('Error while signing up user', error);
+            $scope.isSaving = false;
         });
     }
 
