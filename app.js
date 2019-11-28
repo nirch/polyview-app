@@ -44,19 +44,25 @@ app.controller("signupCtrl", function ($scope, $timeout, $window) {
             newCustomer.save().then(result => {
                 console.log('Customer created', result);
 
-                $timeout(() => {
-                    let loc = $window.location;
-                    let redirectTo;
-                    if (loc.href.includes("localhost") || loc.href.includes("127.0.0.1")) {
-                        redirectTo = `${loc.protocol}//${$scope.techName}.localhost:3000/studio`;
-                    } else {
-                        redirectTo = `https://${$scope.techName}.polyview3d.com/studio`
-                    }
-                    // redirecting...
-                    $scope.isSaving = false;
-                    loc.href = redirectTo;
-                }, 3000);
-
+                user.set("customer", result);
+                user.save().then(result => {
+                    $timeout(() => {
+                        let loc = $window.location;
+                        let redirectTo;
+                        if (loc.href.includes("localhost") || loc.href.includes("127.0.0.1")) {
+                            redirectTo = `${loc.protocol}//${$scope.techName}.localhost:3000/studio`;
+                        } else {
+                            redirectTo = `https://${$scope.techName}.polyview3d.com/studio`
+                        }
+                        // redirecting...
+                        $scope.isSaving = false;
+                        loc.href = redirectTo;
+                    }, 3000);
+    
+                }, error => {
+                    console.error('Error while saving user with customer details: ', error);
+                    $scope.isSaving = false;    
+                });
             }, error => {
                 console.error('Error while creating Customer: ', error);
                 $scope.isSaving = false;
