@@ -4,18 +4,47 @@ var app = angular.module("arCloudApp", []);
 app.controller("signupCtrl", function ($scope, $timeout, $window) {
 
     $scope.isSaving = false;
+    $scope.invalidForm = false;
+    $scope.techNameAvailable = true;
+    $scope.pwdMatch = true;
 
-    $scope.signup = function () {
 
+
+    $scope.signup = function (form) {
+
+        $scope.techNameAvailable = true;
+        $scope.pwdMatch = true;
+
+        // first checking the built in HTML validation: 
+        // required fields, email format, password pattern, tech name pattern
+
+        // techname subdomain regex:
+        // https://stackoverflow.com/questions/7930751/regexp-for-subdomain
+
+        // password (must contain a capital letter, lowercase letter, a number and be at least 8 characters long) regex:
+        // https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+
+        if (form.$invalid) {
+            $scope.invalidForm = true;
+        } else if ($scope.pwd != $scope.confirmPwd) {
+            $scope.pwdMatch = false;
+        } else {
+            // Now checking if tech name is already taken or not
+            Parse.Cloud.run("isTechNameAvailable", { techName: $scope.techName }).then(isAvailable => {
+                $scope.techNameAvailable = isAvailable;
+                $scope.$apply();
+
+                if (isAvailable) {
+                    createUserAndCustomer();
+                }
+            }, error => {
+                console.log(error);
+            });
+        }
+    }
+
+    function createUserAndCustomer() {
         $scope.isSaving = true;
-
-        // validations
-        // 1) email format
-        // 2) password structure (must contain a capital letter, lowercase letter, a number and be at least 8 characters long)
-        // 3) password confirmation
-        // 4) techname according to subdomain https://stackoverflow.com/questions/7930751/regexp-for-subdomain/7933253
-        // 4) techname doesn't exist
-
 
         const user = new Parse.User()
         user.set('username', $scope.email);
@@ -58,10 +87,10 @@ app.controller("signupCtrl", function ($scope, $timeout, $window) {
                         $scope.isSaving = false;
                         loc.href = redirectTo;
                     }, 3000);
-    
+
                 }, error => {
                     console.error('Error while saving user with customer details: ', error);
-                    $scope.isSaving = false;    
+                    $scope.isSaving = false;
                 });
             }, error => {
                 console.error('Error while creating Customer: ', error);
